@@ -1,3 +1,13 @@
+.main-bg {
+  height: 300px;
+  /* css파일에서 src안의 이미지 경로를 넣을때는 ./ */
+  background-image: url("./img/bg.png");
+  /* 큰 이미지 사이즈 맞추기 */
+  background-size: cover;
+  /* 사진의 중점 설정 (사진을 줄이거나 늘릴때 중점 유지) */
+  background-position: center;
+}
+
 .App {
   text-align: center;
 }
