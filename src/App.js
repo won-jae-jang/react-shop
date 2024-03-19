@@ -42,21 +42,12 @@ function App() {
 
       <Routes>
         <Route path="/" element={<ItemDetail shoes={shoes} />} />
-        <Route path="/detail" element={<Detail />} />
-        {/* path="*" 는 지정한 경로를 제외한 모든 폴더 */}
+        {/* url 파라미터 */}
+        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="*" element={<div>없는 페이지요</div>} />
-        {/* nested routes: 여러 유사한 페이지가 필요할때 사용 */}
         <Route path="/about" element={<About />}>
-          {/* 내부 어디에 보여줄 것인지 작성해야 함 */}
           <Route path="member" element={<div>멤버임</div>}></Route>
           <Route path="location" element={<div>위치정보임</div>}></Route>
-        </Route>
-        <Route path="/event" element={<Event />}>
-          <Route
-            path="one"
-            element={<div>첫 주문시 양배추즙 서비스</div>}
-          ></Route>
-          <Route path="two" element={<div>생일기념 쿠폰받기</div>}></Route>
         </Route>
       </Routes>
     </div>
