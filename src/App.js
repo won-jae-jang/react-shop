@@ -9,12 +9,7 @@ import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 
 function App() {
   let [shoes] = useState(data);
-  /*
-  훅: 유용한거 모아둔 함수
-  useNavigate: 페이지 이동을 도와주는 함수(a 태그처럼 텍스트 안뜸)
-  useNavigate(1): 앞으로 한페이지 이동
-  useNavigate(-1): 뒤로 한페이지 이동
-  */
+
   let navigate = useNavigate();
   return (
     <div className="App">
@@ -31,7 +26,7 @@ function App() {
             </Nav.Link>
             <Nav.Link
               onClick={() => {
-                navigate("/detail");
+                navigate("/detail/0");
               }}
             >
               Detail
