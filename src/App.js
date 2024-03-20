@@ -3,14 +3,23 @@ import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
 
 import data from "./data";
 import Detail from "./routes/Detail";
+import axios from "axios";
 
 import { useState } from "react";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 
 function App() {
-  let [shoes] = useState(data);
-
+  let [shoes, setShoes] = useState(data);
   let navigate = useNavigate();
+
+  function addShoes(addShoes) {
+    let copy = [...shoes];
+    addShoes.forEach((shoes) => {
+      copy.push(shoes);
+    });
+    setShoes(copy);
+  }
+
   return (
     <div className="App">
       <Navbar bg="dark" data-bs-theme="dark">
@@ -45,6 +54,21 @@ function App() {
           <Route path="location" element={<div>위치정보임</div>}></Route>
         </Route>
       </Routes>
+      <button
+        onClick={() => {
+          axios
+            .get("https://codingapple1.github.io/shop/data2.json")
+            .then((data) => {
+              console.log("데이터크기: " + data.data.length);
+              addShoes(data.data);
+            })
+            .catch(() => {
+              console.log("실패함");
+            });
+        }}
+      >
+        버튼
+      </button>
     </div>
   );
 }
@@ -62,7 +86,6 @@ function About() {
   return (
     <div>
       <h4>회사 정보임</h4>
-      {/* nested route를 어디에 위치시킬것인가 결정 */}
       <Outlet></Outlet>
     </div>
   );
