@@ -1,3 +1,24 @@
+/* 전환 애니메이션은 
+  1. 애니메이션 동작 전 className 만들기
+  2. 애니메이션 동작 후 className 만들기
+  3. className에 transition 속성 추가
+  4. 원할떄 2번 className 부착
+*/
+
+/* 애니메이션 동작 전 */
+.start {
+  /* 투명도 주는 스타일 */
+  opacity: 0;
+  /* transform: scale(0); */
+}
+
+/* 애니메이션 동작 후 */
+.end {
+  opacity: 1;
+  /* transform: scale(1); */
+  transition: all 0.8s;
+}
+
 input {
   width: 500px;
   height: 32px;

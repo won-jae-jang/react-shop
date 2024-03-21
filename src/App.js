@@ -5,20 +5,18 @@ import data from "./data";
 import Detail from "./routes/Detail";
 import axios from "axios";
 
-import { useState } from "react";
+import { createContext, lazy, useState } from "react";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
+
+//context API. context = state 보관함
+export let Context1 = createContext(); //state 보관함
 
 function App() {
   let [shoes, setShoes] = useState(data);
+  let [quantity, setQuantity] = useState([10, 11, 12]); //재고 데이터
+  let [clickCount, setClickCount] = useState(0);
+  let [loading, setLoading] = useState(false);
   let navigate = useNavigate();
-
-  function addShoes(addShoes) {
-    let copy = [...shoes];
-    addShoes.forEach((shoes) => {
-      copy.push(shoes);
-    });
-    setShoes(copy);
-  }
 
   return (
     <div className="App">
@@ -45,33 +43,83 @@ function App() {
       </Navbar>
 
       <Routes>
-        <Route path="/" element={<ItemDetail shoes={shoes} />} />
-        {/* url 파라미터 */}
-        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+        <Route path="/" element={<HomepageItems shoes={shoes} />} />
+        <Route
+          path="/detail/:id"
+          element={
+            <Context1.Provider value={{ quantity }}>
+              <Detail shoes={shoes} />
+            </Context1.Provider>
+          }
+        />
         <Route path="*" element={<div>없는 페이지요</div>} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>멤버임</div>}></Route>
           <Route path="location" element={<div>위치정보임</div>}></Route>
         </Route>
       </Routes>
-      <button
+      {/* <button
         onClick={() => {
-          axios
-            .get("https://codingapple1.github.io/shop/data2.json")
-            .then((data) => {
-              console.log("데이터크기: " + data.data.length);
-              addShoes(data.data);
-            })
-            .catch(() => {
-              console.log("실패함");
-            });
+          setLoading(true);
+          if (clickCount === 2) {
+            alert("더 이상 조회할 데이터가 없습니다");
+          } else {
+            axios
+              .get("https://codingapple1.github.io/shop/data2.json")
+              .then((data) => {
+                console.log("데이터크기: " + data.data.length);
+                setClickCount(clickCount + 1);
+                setLoading(false);
+                let copy = [...shoes, ...data.data];
+                setShoes(copy);
+              })
+              .catch(() => {
+                setLoading(false);
+                console.log("실패함");
+              });
+          }
+
+          // 한번에 2곳에 요청을 보낼때
+          Promise.all([axios.get("/url1"), axios.get("/url2")]).then(() => {
+            // 성공시 로직 실행
+          });
         }}
-      >
-        버튼
-      </button>
+      ></button> */}
+      {loading === true ? <p>이미지를 불러오는 중입니다...!</p> : null}
     </div>
   );
 }
+
+function HomepageItems(props) {
+  return (
+    <>
+      <div className="main-bg"></div>
+      <div class="container">
+        <div class="row">
+          {props.shoes.map((shoes, index) => {
+            return <Card shoes={shoes} i={index + 1}></Card>;
+          })}
+        </div>
+      </div>
+      {/* 더보기 버튼 */}
+    </>
+  );
+}
+
+function Card(props) {
+  return (
+    <div class="col-6 col-md-4">
+      <img
+        src={"https://codingapple1.github.io/shop/shoes" + props.i + ".jpg"}
+        width="80%"
+      />
+      <h4>{props.shoes.title}</h4>
+      <p>{props.shoes.content}</p>
+    </div>
+  );
+}
+
+function MoreButton() {}
 
 function Event() {
   return (
@@ -88,39 +136,6 @@ function About() {
       <h4>회사 정보임</h4>
       <Outlet></Outlet>
     </div>
-  );
-}
-
-function ItemDetail(props) {
-  return (
-    <div>
-      <div className="main-bg"></div>
-      <Container>
-        <Row>
-          {props.shoes.map(function (shoes, index) {
-            return <Card shoes={shoes} index={index} />;
-          })}
-        </Row>
-      </Container>
-    </div>
-  );
-}
-
-function Card(props) {
-  return (
-    <Col sm>
-      <img
-        src={
-          "https://codingapple1.github.io/shop/shoes" +
-          (props.index + 1) +
-          ".jpg"
-        }
-        width="80%"
-        alt=""
-      />
-      <h4>{props.shoes.title}</h4>
-      <p>{props.shoes.content}</p>
-    </Col>
   );
 }
 
