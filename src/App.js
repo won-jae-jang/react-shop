@@ -3,12 +3,12 @@ import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
 
 import data from "./data";
 import Detail from "./routes/Detail";
+import Cart from "./routes/Cart";
 import axios from "axios";
 
 import { createContext, lazy, useState } from "react";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 
-//context API. context = state 보관함
 export let Context1 = createContext(); //state 보관함
 
 function App() {
@@ -38,6 +38,13 @@ function App() {
             >
               Detail
             </Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/cart");
+              }}
+            >
+              cart
+            </Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -47,7 +54,7 @@ function App() {
         <Route
           path="/detail/:id"
           element={
-            <Context1.Provider value={{ quantity }}>
+            <Context1.Provider value={{ quantity, shoes }}>
               <Detail shoes={shoes} />
             </Context1.Provider>
           }
@@ -57,6 +64,7 @@ function App() {
           <Route path="member" element={<div>멤버임</div>}></Route>
           <Route path="location" element={<div>위치정보임</div>}></Route>
         </Route>
+        <Route path="/cart" element={<Cart></Cart>} />
       </Routes>
       {/* <button
         onClick={() => {

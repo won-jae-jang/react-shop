@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Col, Button, Form, InputGroup, Nav } from "react-bootstrap";
+import { addShoes } from "../store/cartSlice.js";
 import { Context1 } from "./../App.js";
 
 function Detail(props) {
   let { quantity, shoes } = useContext(Context1);
+  let dispatch = useDispatch(); //store.js 에 요청을 보내는 함수
 
   let [timer, setTimer] = useState(true);
   let [detailFade, setDetailFade] = useState("");
@@ -22,19 +25,8 @@ function Detail(props) {
     };
   }, []);
 
-  // Detail 페이지 애니메이션 주기
-  useEffect(() => {
-    setTimeout(() => {
-      setDetailFade("end");
-    }, 10);
-    return () => {
-      setDetailFade("");
-    };
-  });
-
   return (
     <div>
-      {quantity}
       {timer === true ? (
         <div className="alert alert-warning">2초이내 구매시 할인</div>
       ) : null}
@@ -47,7 +39,14 @@ function Detail(props) {
       <h4>{props.shoes[0].title}</h4>
       <p>{props.shoes[0].content}</p>
       <p>{props.shoes[0].price}</p>
-      <Button variant="primary">주문하기</Button>{" "}
+      <Button
+        variant="primary"
+        onClick={() => {
+          dispatch(addShoes(props.shoes[0]));
+        }}
+      >
+        주문하기
+      </Button>{" "}
       {/* defaultActiveKey는 기본으로 눌려있을 버튼 */}
       <Nav variant="tabs" defaultActiveKey="link0">
         <Nav.Item>
