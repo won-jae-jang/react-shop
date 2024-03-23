@@ -13,25 +13,18 @@ let carts = createSlice({
         return item.id === itemId.payload;
       });
       state[index].count++;
-      state.forEach((item) => {
-        if (item.id === itemId.payload) {
-          item.count += 1;
-          return;
-        }
-      });
     },
-    // todo 중복된 상품 등록시 수량 증가
-    addShoes(state, item) {
+    addShoes(state, addItem) {
       let index = state.findIndex((item) => {
-        return item.id === item.payload;
+        return item.id === addItem.payload.id;
       });
       console.log("index: " + index);
-      console.log("item.payload: " + item.payload);
-      //   if (index === -1) {
-      //     state.push(item.payload);
-      //     return;
-      //   }
-      //   state[index].count++;
+
+      if (index === -1) {
+        state.push(addItem.payload);
+        return;
+      }
+      state[index].count++;
     },
     deleteShoes(state, itemId) {
       let index = state.findIndex((item) => {

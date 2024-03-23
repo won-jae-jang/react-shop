@@ -35,13 +35,7 @@ function Cart() {
               <td>
                 <button
                   onClick={() => {
-                    dispatch(
-                      increaseQuantity({
-                        id: `${carts[index].id}`,
-                        name: `${carts[index].name}`,
-                        count: 2,
-                      })
-                    );
+                    dispatch(increaseQuantity(carts[index].id));
                   }}
                 >
                   +
