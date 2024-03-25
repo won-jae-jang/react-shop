@@ -1,18 +1,20 @@
 import "./App.css";
 import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
+import { createContext, lazy, useEffect, useState, Suspense } from "react";
+import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 
 import data from "./data";
-import Detail from "./routes/Detail";
-import Cart from "./routes/Cart";
-import axios from "axios";
-
-import { createContext, lazy, useEffect, useState } from "react";
-import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
+const Detail = lazy(() => import("./routes/Detail"));
+const Cart = lazy(() => import("./routes/Cart"));
+const Quiz = lazy(() => import("./routes/Quiz"));
 
 export let Context1 = createContext(); //state 보관함
 
 function App() {
   useEffect(() => {
+    if (localStorage.getItem("watched")) {
+      return;
+    }
     localStorage.setItem("watched", JSON.stringify([]));
   }, []);
 
@@ -52,23 +54,26 @@ function App() {
         </Container>
       </Navbar>
 
-      <Routes>
-        <Route path="/" element={<HomepageItems shoes={shoes} />} />
-        <Route
-          path="/detail/:id"
-          element={
-            <Context1.Provider value={{ quantity, shoes }}>
+      <Suspense fallback={<div>로딩중임</div>}>
+        <Routes>
+          <Route path="/" element={<HomepageItems shoes={shoes} />} />
+          <Route
+            path="/detail/:id"
+            element={
+              // Suspense 태그로 감싸면 로딩중 ui 넣기 가능
               <Detail shoes={shoes} />
-            </Context1.Provider>
-          }
-        />
-        <Route path="*" element={<div>없는 페이지요</div>} />
-        <Route path="/about" element={<About />}>
-          <Route path="member" element={<div>멤버임</div>}></Route>
-          <Route path="location" element={<div>위치정보임</div>}></Route>
-        </Route>
-        <Route path="/cart" element={<Cart></Cart>} />
-      </Routes>
+            }
+          />
+          <Route path="*" element={<div>없는 페이지요</div>} />
+          <Route path="/about" element={<About />}>
+            <Route path="member" element={<div>멤버임</div>}></Route>
+            <Route path="location" element={<div>위치정보임</div>}></Route>
+          </Route>
+          <Route path="/cart" element={<Cart></Cart>} />
+          <Route path="/quiz" element={<Quiz></Quiz>} />
+        </Routes>
+      </Suspense>
+
       {loading === true ? <p>이미지를 불러오는 중입니다...!</p> : null}
     </div>
   );

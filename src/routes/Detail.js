@@ -19,7 +19,7 @@ function Detail(props) {
           (Number(id) + 1) +
           ".jpg"
         }
-        width="80%"
+        width="40%"
         alt=""
       />
       <hr />
@@ -80,7 +80,6 @@ function Detail(props) {
 
 function TabContent({ tab }) {
   let [fade, setFade] = useState("");
-  let { quantity, shoes } = useContext(Context1);
 
   useEffect(() => {
     setTimeout(() => {
@@ -94,7 +93,7 @@ function TabContent({ tab }) {
 
   return (
     <div className={`start ${fade}`}>
-      {[<div>{quantity}</div>, <div>내용1</div>, <div>내용2</div>][tab]}
+      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tab]}
     </div>
   );
 }

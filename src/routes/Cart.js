@@ -1,13 +1,14 @@
 import Table from "react-bootstrap/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseQuantity, deleteShoes } from "../store/cartSlice";
+import { memo, useMemo, useState } from "react";
 
 function Cart() {
   // (state) => state.stock 는 .. => {return state.stock} 과 동일
   let carts = useSelector((state) => state.carts); //redux 가져와줌
   let state = useSelector((state) => state);
   let dispatch = useDispatch(); //store.js 에 요청을 보내는 함수
-  console.log(carts);
+  let [count, setCount] = useState(0);
 
   return (
     <div>
